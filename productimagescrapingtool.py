@@ -18,6 +18,7 @@ import tkinter
 products = []
 fileDest = ""
 userAgentName = "New User-Agent"
+identifierTypeOptions = ["Product Number","Bulk ID"]
 
 # Initializes colored terminal text
 os.system('color')
@@ -60,20 +61,26 @@ def scrapeImages(np, p, fp):
     for product in range(np): 
         # Derives the product ID and URL from the page
         currProduct = p[product]
-        productID = str(currProduct)[3:8]
+        productID = str(currProduct)
+        if(identifierType.get() == identifierTypeOptions[1]):
+            productID = str(currProduct)[3:8]
         url = "https://www.americankeysupply.com/product/" + productID
 
         # Writes the current product to the status text box
-        productString = str(currProduct) + ": "
+        productString = productID + ": "
         writeToTextBox(statusText, productString)
         root.update()
 
         # Attempts to open the specified page
         myOpener = MyOpener()
-        page = myOpener.open(url)
+        try:
+            page = myOpener.open(url)
+        except OSError:
+            messagebox.showerror(title = "Error", message = "Unable to connect to the webpage. Please check your connection and try again.")
+            return
 
         # Prints the ID of the product
-        statusString = statusString + str(currProduct) + ": "
+        statusString = statusString + productID + ": "
 
         # Searches the page for the link to the product image,
         # goes to the next product if there was an issue
@@ -91,7 +98,7 @@ def scrapeImages(np, p, fp):
         # Prepares the file to be placed at the correct destination
         # with the correct name
         fileName = imgLink.split("/")[-1]
-        bulkNumberName = str(currProduct) + ".jpg"
+        bulkNumberName = productID + ".jpg"
         bulkNumberDest = fileDest + "/" + bulkNumberName
 
         # Gets the image content from the supplied URL
@@ -176,9 +183,13 @@ def openOptionsWindow():
                           column = 1,
                           padx = 10,
                           pady = 10)
+    tkinter.Label(optionsWindow,
+                  text = "Product Identifier Type:",
+                  justify = tkinter.RIGHT).grid(row = 1, column = 0)
+    tkinter.OptionMenu(optionsWindow, identifierType, *identifierTypeOptions).grid(row = 1, column = 1, pady = (0,10))
     tkinter.Button(optionsWindow,
                    text = "Save",
-                   command = lambda: onOptionsWindowDoneButtonClick(optionsWindow, userAgentTextBox)).grid(row = 1,
+                   command = lambda: onOptionsWindowDoneButtonClick(optionsWindow, userAgentTextBox)).grid(row = 2,
                                                                                                            column = 1,
                                                                                                            pady = (0,10))
 
@@ -214,6 +225,9 @@ root = tkinter.Tk()
 root.resizable(False, False)
 # Changes the title of the window
 root.title("AKS Image Scraping Tool")
+# Sets default options dependent on the root window existing
+identifierType = tkinter.StringVar()
+identifierType.set(identifierTypeOptions[0])
 
 # Places all of the elements in the main window
 tkinter.Label(root,
