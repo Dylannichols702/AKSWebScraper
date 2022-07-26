@@ -5,7 +5,7 @@ The purpose of this program is to make finding and downloading AKS product image
 efficient.
 
 This program will:
-- Find the correct image or set of images for products given the 8-digit generic bulk number.
+- Find the correct image or set of images for products given a search criteria.
 - Download the correct image and place in the folder you choose.
 - Show which products the tool couldn't find on the site.
 
@@ -24,7 +24,16 @@ To add or remove products to the search, click the "Edit Products" button on the
 ...
 ```
 
-Once you've entered the bulk number for each product, click the "Done" button at the bottom of the pop-up window.
+You can also search for products by product number by selecting "Product Number" in the "Product Identifier Type" dropdown of the "Options" menu. For example, if you wanted to look for the aforementioned elements via search, your product list should like this sample:
+
+```
+1234
+5546
+13514
+...
+```
+
+Once you've entered the identifier for each product, click the "Done" button at the bottom of the pop-up window.
 
 ### Scanning for Products
-At this point, press the "Scrape" button on the bottom of the program window to start the search. During this process, each product's bulk number will appear in the text window in the center of the screen, as well as whether or not the search yielded an image download. When the search is complete, a pop-up window will appear either stating complete success in every download or, more likely, listing all of the products the search couldn't find. Click the "OK" button to dismiss this window.
+At this point, press the "Scrape" button on the bottom of the program window to start the search. During this process, each product's number will appear in the text window in the center of the screen, as well as whether or not the search yielded an image download. When the search is complete, a pop-up window will appear either stating complete success in every download or, more likely, listing all of the products the search couldn't find. Click the "OK" button to dismiss this window.
